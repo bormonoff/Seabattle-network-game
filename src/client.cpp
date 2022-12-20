@@ -15,7 +15,7 @@ int main(){
 
     boost::system::error_code ex;
     tcp::socket socket{io};
-    socket.connect(tcp::endpoint(net::ip::make_address("127.0.0.1", ex),3333));
+    socket.connect(tcp::endpoint(net::ip::make_address("51.250.31.12", ex),3333));
 
     if(ex){
         cout<<"error connect"<<endl;

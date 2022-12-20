@@ -11,7 +11,7 @@ using net::ip::tcp;
 int main(){
     net::io_context io;
 
-    tcp::acceptor acceptor(io, tcp::endpoint(net::ip::address::from_string("127.0.0.1"), 3333));
+    tcp::acceptor acceptor(io, tcp::endpoint(net::ip::address::from_string("51.250.31.12"), 3333));
     cout<<"waiting for connetion"<<endl;
 
     boost::system::error_code ex;
