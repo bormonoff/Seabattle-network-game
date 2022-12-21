@@ -1,35 +1,28 @@
-#include <iostream>
+#include "battlefield.h"
 
-#include <boost/asio.hpp>
+void PrintFields(Field& player, Field& enemy){
+char sign{'A'};
+std::string left_tab = "  ";
 
+player.PrintHeadLine(std::cout);
+std::cout<<std::endl;
+for (int i = 0; i < player.m_fieldSize; i++)
+{   
+    std::cout<<left_tab;
+    std::cout<<i<<" ";
+    player.PrintFieldLine(std::cout, i);
+    std::cout<<" "<<i;
+    std::cout<<left_tab<<std::endl;
+}
+player.PrintHeadLine(std::cout);
+std::cout<<std::endl;
 
-using namespace std;
-namespace net = boost::asio;
-using net::ip::tcp;
-
+}
 
 int main(){
-    net::io_context io;
+Field a;
+Field b;
+PrintFields(a,b);
 
-    cout<<"waiting for connetion"<<endl;
-
-    boost::system::error_code ex;
-    tcp::socket socket{io};
-    socket.connect(tcp::endpoint(net::ip::make_address("51.250.31.12", ex),3333));
-
-    if(ex){
-        cout<<"error connect"<<endl;
-      
-    }
-
-   socket.write_some(net::buffer("Client, aboba"));
-
-   net::streambuf stream_buf;
-   net::read_until(socket, stream_buf, '\0', ex);
-   std::string client_data{std::istreambuf_iterator<char>(&stream_buf),
-                        std::istreambuf_iterator<char>()};
-
-    cout<<client_data<<endl; 
-
-    return 0;
+ return 0;  
 }
