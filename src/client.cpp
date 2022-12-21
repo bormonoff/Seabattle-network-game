@@ -1,4 +1,6 @@
 #include "battlefield.h"
+#include <random>
+#include <ctime>
 
 void PrintFields(Field& player, Field& enemy){
 char sign{'A'};
@@ -20,9 +22,11 @@ std::cout<<std::endl;
 }
 
 int main(){
-Field a;
-Field b;
-PrintFields(a,b);
 
- return 0;  
+std::mt19937 engine(time(NULL));
+Field b = Field::GenerateField(engine);
+Field a;
+PrintFields(b, a);
+
+ return 0;
 }
