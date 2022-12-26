@@ -16,5 +16,6 @@ int main(int argc, char* argv[]){
     }else if(argc == 4){
         StartClient(game, std::stoi(argv[1]), argv[3]);
     }
+  
     return 0;
 }
