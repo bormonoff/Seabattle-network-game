@@ -27,7 +27,7 @@ find_package(Threads REQUIRED)
 # Проект содержит единственный исходный файл src/main.cpp
 
 add_executable(server 
-               src/server.cpp
+               src/main.cpp
                src/battlefield.h
                src/network.h
                src/handlegame.h)

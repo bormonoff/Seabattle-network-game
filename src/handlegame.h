@@ -92,8 +92,10 @@ public:
         }else{
             PrintFields();
 
+            std::cout<<"Wait for your turn"<<std::endl;
+
             std::string temp {*(ReadExact<2>(socket, ex))};
-            std::cout<<temp<<std::endl;
+            std::cout<<"Enemy shooted as: "<<temp<<std::endl;
             std::pair shootCoord {DataFromString(temp)};
             temp = m_myField.Shoot(shootCoord.first, shootCoord.second);
 
