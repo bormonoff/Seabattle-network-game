@@ -25,11 +25,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 # Проект содержит единственный исходный файл src/main.cpp
-add_executable(client
-               src/client.cpp
-               src/battlefield.h
-               src/network.h
-               src/handlegame.h)
 
 add_executable(server 
                src/server.cpp

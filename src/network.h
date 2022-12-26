@@ -6,10 +6,10 @@
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
 
-static void StartServer(HandleGame& game){
+static void StartServer(HandleGame& game, const int& port){
     net::io_context io; 
     
-    tcp::acceptor acceptor(io,tcp::endpoint(net::ip::address::from_string("127.0.0.1"), 3333));
+    tcp::acceptor acceptor(io,tcp::endpoint(net::ip::address::from_string("0.0.0.0"), port));
     std::cout<<"Waiting for connection"<<std::endl;
 
     boost::system::error_code ex;
@@ -25,7 +25,7 @@ static void StartServer(HandleGame& game){
     game.StartGame(socket, ex, true);
 }
 
-static void StartClient(HandleGame& game){
+static void StartClient(HandleGame& game, const int& port, const std::string& IP){
     
     net::io_context io; 
 
@@ -33,7 +33,7 @@ static void StartClient(HandleGame& game){
 
     boost::system::error_code ex;
     tcp::socket socket{io};
-    socket.connect(tcp::endpoint(net::ip::address::from_string("127.0.0.1"), 3333),ex);
+    socket.connect(tcp::endpoint(net::ip::address::from_string(IP), port),ex);
 
     if(!ex){
         std::cout<<"Connected sucesfully!"<<std::endl;
