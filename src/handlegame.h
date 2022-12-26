@@ -1,9 +1,9 @@
 #pragma once
 
-#include "battlefield.h"
 #include <boost/asio.hpp>
 #include <random>
 #include <ctime>
+#include "battlefield.h"
 
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
