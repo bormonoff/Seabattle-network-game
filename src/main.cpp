@@ -3,7 +3,7 @@
 int main(int argc, char* argv[]){
 
     if(argc != 3 && argc != 4){
-        std::cout<<"Launch program using <port> <seed> for server or <port> <seed> <IP> for client "<<std::endl;
+        std::cout<<"Launch program using <port> <seed> for the server or <port> <seed> <IP> for the client "<<std::endl;
         return 1;
     }
 
