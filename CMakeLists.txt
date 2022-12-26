@@ -25,7 +25,21 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 # Проект содержит единственный исходный файл src/main.cpp
-add_executable(client src/client.cpp)
-add_executable(server src/server.cpp)
+add_executable(client
+               src/client.cpp
+               src/battlefield.h
+               src/network.h
+               src/handlegame.h)
+
+add_executable(server 
+               src/server.cpp
+               src/battlefield.h
+               src/network.h
+               src/handlegame.h)
+
+
+
+set(CMAKE_BUILD_TYPE Debug)
+
 # Просим компоновщик подключить библиотеку для поддержки потоков
 #target_link_libraries(hello PRIVATE Threads::Threads)
