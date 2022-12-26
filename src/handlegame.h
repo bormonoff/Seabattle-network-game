@@ -95,7 +95,7 @@ public:
             std::cout<<"Wait for your turn"<<std::endl;
 
             std::string temp {*(ReadExact<2>(socket, ex))};
-            std::cout<<"Enemy shooted as: "<<temp<<std::endl;
+            std::cout<<"The enemy shooted as: "<<temp<<std::endl;
             std::pair shootCoord {DataFromString(temp)};
             temp = m_myField.Shoot(shootCoord.first, shootCoord.second);
 
@@ -131,9 +131,9 @@ public:
     }
 
     void EndGame(){
-        std::cout<<"The game has ended"<<std::endl;  
+        std::cout<<"The game is ended"<<std::endl;  
         if(m_myField.health == 0){
-            std::cout<<"You failed!"<<std::endl;
+            std::cout<<"You fail!"<<std::endl;
         }else{
             std::cout<<"You win!"<<std::endl;
         }
