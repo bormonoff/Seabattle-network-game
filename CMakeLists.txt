@@ -25,7 +25,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 # Проект содержит единственный исходный файл src/main.cpp
-
 add_executable(server 
                src/main.cpp
                src/battlefield.h
