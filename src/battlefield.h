@@ -1,17 +1,16 @@
 #pragma once
 
-#include <string>
-#include <iostream>
 #include <array>
-#include <set>
+#include <iostream>
 #include <optional>
-#include <vector>
 #include <random>
+#include <string>
+#include <set>
+#include <vector>
 
-
-class Field
-{
-    enum class State{
+class Field {
+public:
+    enum class State {
         NOTSTATE,
         EMPTY,
         LIVE,
@@ -19,60 +18,57 @@ class Field
         HIT
     }; 
 
-    public:
     static const short m_fieldSize = 8;
 
-    Field(State state = State::NOTSTATE){
+    Field(State state = State::NOTSTATE) {
         m_field.fill(state);
     }
     
-    void PrintFieldLine(std::ostream& out, size_t y){
+    void PrintFieldLine(std::ostream& out, size_t y) {
         std::array<char, m_fieldSize * 2-1> list;
-        for (int x = 0; x < m_fieldSize; x++){
-            list[x*2] = Sign(m_field[x + y * m_fieldSize]);
-            if(x*2+1<m_fieldSize*2-1){
-                list[x*2+1] = ' ';
+        for (int x = 0; x < m_fieldSize; ++x) {
+            list[x * 2] = Sign(m_field[x + y * m_fieldSize]);
+            if (x * 2 + 1 < m_fieldSize * 2 - 1) {
+                list[x * 2 + 1] = ' ';
             }
         }
-     
-        out<< 1 + y ;
-        out<<" ";
+        out << 1 + y ;
+        out << " ";
         out.write(list.begin(), list.size());
-        out<<" ";
-        out<< 1 + y ;
+        out << " ";
+        out << 1 + y;
     }
 
-    void PrintHeadLine(std::ostream& out){
-        out<<"  ";
-        out<<"A B C D E F G H";
-        out<<"  ";
+    void PrintHeadLine(std::ostream& out) {
+        out << "  ";
+        out << "A B C D E F G H";
+        out << "  ";
     }
 
     template<typename T>
-    static Field GenerateField(T&& engine){
+    static Field GenerateField(T&& engine) {
         std::optional<Field> player;
-        do{
+        do {
             player = TryGenerateField(engine);
-        }while(!player);
+        } while(!player);
         return *player;
-    }
+    } 
 
 private:
     template<typename T>
-    static std::optional<Field> TryGenerateField(T&& random_engine){
+    static std::optional<Field> TryGenerateField(T&& random_engine) {
         std::set<std::pair<size_t, size_t>> availiableElements;
         std::vector<int> sizes{4,3,3,2,2,2,1,1};
         Field temp {State::EMPTY};
-
-        for (size_t x = 0; x < m_fieldSize; x++){
-            for (size_t y = 0; y < m_fieldSize; y++){
+        for (size_t x = 0; x < m_fieldSize; ++x) {
+            for (size_t y = 0; y < m_fieldSize; ++y) {
                 availiableElements.insert({x,y});
             }
         }
         
         const auto markAsUsed = [&](size_t x, size_t y) {
-            for (int dx = -1;  dx <= 1; dx++){
-                for (int dy = -1; dy <= 1; dy++){
+            for (int dx = -1;  dx <= 1; ++dx) {
+                for (int dy = -1; dy <= 1; ++dy) {
                     availiableElements.erase({x + dx, y + dy});
                 }                
             }
@@ -84,31 +80,26 @@ private:
             return {dx, dy};
         };
 
-        const auto CheckShip = [&](size_t x, size_t y, size_t dir, int lengh){
+        const auto CheckShip = [&](size_t x, size_t y, size_t dir, int lengh) {
         std::pair[dx, dy] = dirTo(dir);
-        for (int i = 0; i < lengh; i++)
-        {
-            size_t cx = x + dx*i;
-            size_t cy = y + dy*i;
-
-            if(cx >= m_fieldSize || cy >= m_fieldSize){
+        for (int i = 0; i < lengh; ++i) {
+            size_t cx = x + dx * i;
+            size_t cy = y + dy * i;
+            if (cx >= m_fieldSize || cy >= m_fieldSize) {
                 return false;
             }
-            
-            if(availiableElements.count({cx, cy})==0){
+            if (availiableElements.count({cx, cy}) == 0) {
                 return false;
             }
         }
             return true;        
         };
 
-        const auto MarkShip = [&](size_t x, size_t y, size_t dir, int lengh){
+        const auto MarkShip = [&](size_t x, size_t y, size_t dir, int lengh) {
         std::pair[dx, dy] = dirTo(dir);
-        for (int i = 0; i < lengh; i++)
-        {
-            size_t cx = x + dx*i;
-            size_t cy = y + dy*i;
-
+        for (int i = 0; i < lengh; ++i) {
+            size_t cx = x + dx * i;
+            size_t cy = y + dy * i;
             temp.Get(cx, cy) = State::LIVE;
             markAsUsed(cx, cy);
         }};
@@ -116,15 +107,14 @@ private:
         using Random = std::uniform_int_distribution<int>;
         using Range = Random::param_type;
 
-        for(int shipSize : sizes){
+        for (int shipSize : sizes) {
             std::pair<int, int> pos;
             Random a;
             size_t dir;
             size_t attempts = 100;
-
-            do{
+            do {
                 attempts--;
-                    if(attempts<=0){
+                    if (attempts <= 0) {
                         return std::nullopt;
                     }
                 size_t pos_index = a(random_engine, Range(0,availiableElements.size() - 1));
@@ -136,7 +126,7 @@ private:
         return temp;
     }
 
-    const char Sign(State state){
+    const char Sign(State state) {
         switch(state){
         case State::NOTSTATE:
             return '?';
@@ -152,47 +142,46 @@ private:
             return '-';
         }}
 
-    enum class Result{
+    enum class Result {
         MISS = 0,
         HIT  = 1,
         KILL = 2
     };
 
-    State& Get (size_t x, size_t y){
+    State& Get (size_t x, size_t y) {
         return m_field[x+ y*m_fieldSize];
     }
 
-    bool IsDead (size_t x, size_t y){
+    bool IsDead (size_t x, size_t y) {
         return CheckDeadInDirection(x,y,1,0) && CheckDeadInDirection(x,y,0,1)
             && CheckDeadInDirection(x,y,-1,0) && CheckDeadInDirection(x,y,0,-1);
     }
 
-    bool CheckDeadInDirection(size_t x, size_t y, int dx, int dy){
-        for(; x<=m_fieldSize, y<=m_fieldSize; x += dx, y+= dy){
+    bool CheckDeadInDirection(size_t x, size_t y, int dx, int dy) {
+        for (;x <= m_fieldSize, y <= m_fieldSize; x += dx, y+= dy){
             if(Get(x,y) == State::LIVE){return 0;}
             if(Get(x,y) == State::EMPTY){return 1;}
         }
         return true;
     }
     
-    void MarkAfterDeath (size_t x, size_t y){
-        auto MarkEmpty = [&](size_t x, size_t y){
-            if(Get(x,y) != State::NOTSTATE){
+    void MarkAfterDeath (size_t x, size_t y) {
+        auto MarkEmpty = [&](size_t x, size_t y) {
+            if (Get(x,y) != State::NOTSTATE) {
                 return;
             }
-            if(x>=m_fieldSize || y >= m_fieldSize){
+            if (x>=m_fieldSize || y >= m_fieldSize) {
                 return;
             }
             Get(x,y) = State::EMPTY;
         };
 
-        auto MarkCycle = [&](size_t x, size_t y, int dx, int dy){
-            for(;x<m_fieldSize && y < m_fieldSize; x += dx, y += dy){
+        auto MarkCycle = [&](size_t x, size_t y, int dx, int dy) {
+            for (;x<m_fieldSize && y < m_fieldSize; x += dx, y += dy) {
                 MarkEmpty(x-dy, y-dx);
                 MarkEmpty(x+dy, y+dx);
                 MarkEmpty(x,y);
-
-                if(Get(x,y) != State::KILLED){
+                if (Get(x,y) != State::KILLED) {
                     return;
                 }
             }
@@ -205,25 +194,24 @@ private:
     }
 
 public:
-
-    std::string Shoot(size_t x, size_t y){
-        if(Get(x,y) != State::LIVE){
+    std::string Shoot(size_t x, size_t y) {
+        if (Get(x,y) != State::LIVE) {
             return std::string{"MISS"};
-        }else{
+        } else {
             Get(x,y) = State::KILLED;
             health--;
-            if(IsDead(x,y)){ 
+            if (IsDead(x,y)) { 
                 return std::string{"KILL"};
-            }else{
+            } else {
                 return std::string{"HIT "};
             };
         }
     }
     
-    void MarkCell(size_t x, size_t y, const std::string& result){
-        if( result == "MISS"){
+    void MarkCell(size_t x, size_t y, const std::string& result) {
+        if( result == "MISS") {
             Get(x,y) = State::EMPTY;
-        }else{
+        } else {
             Get(x,y) = State::KILLED;
             if(result == "KILL"){
                 MarkAfterDeath(x,y);
