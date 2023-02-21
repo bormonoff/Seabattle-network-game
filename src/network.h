@@ -1,7 +1,8 @@
 #pragma once
 
-#include "handlegame.h"
 #include <fstream>
+
+#include "handlegame.h"
 
 namespace net = boost::asio;
 using tcp = net::ip::tcp;

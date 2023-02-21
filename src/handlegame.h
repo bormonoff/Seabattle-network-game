@@ -1,8 +1,10 @@
 #pragma once
 
-#include <boost/asio.hpp>
 #include <random>
 #include <ctime>
+
+#include <boost/asio.hpp>
+
 #include "battlefield.h"
 
 namespace net = boost::asio;
