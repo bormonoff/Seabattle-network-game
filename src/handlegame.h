@@ -32,7 +32,7 @@ static void PrintTwoFields(Field& player, Field& enemy) {
     enemy.PrintHeadLine(std::cout);
     std::cout << std::endl;
 }
-00000000000000000000000000000000000000000000000000000000000000000000000000000000
+
 template <size_t count>
 static std::optional<std::string> ReadExact(tcp::socket& socket, 
                                             boost::system::error_code& ex) {
