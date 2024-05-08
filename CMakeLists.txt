@@ -1,24 +1,9 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.25)
 
-project(Hello CXX)
+project(game CXX)
 set(CMAKE_CXX_STANDARD 20)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-
-conan_basic_setup()
-
-find_package(Boost 1.78.0 REQUIRED)
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-endif()
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
+find_package(Boost REQUIRED)
 
-add_executable(server 
-               src/main.cpp
-               src/battlefield.h
-               src/network.h
-               src/handlegame.h)
-
-set(CMAKE_BUILD_TYPE Debug)
+add_subdirectory(src)
